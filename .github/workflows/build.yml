@@ -3,7 +3,7 @@ name: Build and Push AMD64 Docker Image
 on:
   push:
     branches:
-      - dev
+      - main
 
 env:
   REGISTRY: docker.io
@@ -19,6 +19,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Clone talebook repository
+        run: git clone https://github.com/hehetoshang/talebook
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -50,7 +53,7 @@ jobs:
           # 根据分支生成标签
           TAGS=""
           
-          if [[ "$BRANCH_NAME" == "master" ]]; then
+          if [[ "$BRANCH_NAME" == "main" ]]; then
             TAGS="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
             TAGS="$TAGS,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:master"
           elif [[ "$BRANCH_NAME" == "dev" ]]; then
@@ -83,7 +86,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./talebook
           platforms: linux/amd64
           labels: ${{ steps.meta.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
