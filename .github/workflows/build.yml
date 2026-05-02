@@ -9,7 +9,7 @@ env:
   # 添加克隆仓库信息
   CLONE_USERNAME: talebook
   CLONE_REPO: talebook
-  CLONE_BRANCH: dev/docker
+  CLONE_BRANCH: dev/hehetoshang
 
 jobs:
   docker:
